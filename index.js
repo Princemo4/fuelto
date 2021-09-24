@@ -11,12 +11,15 @@ const bodyParse = bodyParser.json();
 // const urlencodedParser = bodyParser.urlencoded({extended: false})
 const fs = require('fs')
 const AWS = require('aws-sdk');
+const moment = require('moment');
 
 const BUCKET_NAME = 'video-bucket64';
 const s3 = new AWS.S3({
   accessKeyId: process.env.s3_bucket_key,
   secretAccessKey: process.env.s3_bucket_secret
 })
+
+const video_expires_days = 14; // 14 days to expire from S3
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
@@ -30,16 +33,21 @@ app.get('/', async (req, res) => {
 })
 
 app.post('/upload', type, async (req,res) => {
-    // file_buf = new Buffer.from(req.body.data)
     const fileContent = fs.readFileSync(req.file.path)
-    console.log(s3)
-    const fileName = 'coverletter_video_' + (Math.random() + 1).toString(36).substring(4) + '.webm';
+    const fileName = 'coverletter_video_' + (Math.random() + 1).toString(36).substring(4) + '.mp4';
+    const todayDate = new Date();
+    const expiresOn = new Date();
+          expiresOn.setDate(expiresOn.getDate() + video_expires_days);
     let params = {
       Bucket: BUCKET_NAME,
       Key: fileName,
-      Body: fileContent
+      Body: fileContent,
+      Metadata: {
+        'date_uploaded': todayDate.toDateString(),
+        'full_name': req.body.full_name,
+        'Expires_On': expiresOn.toDateString()
+      }
     }
-    console.log(process.env.s3_bucket_key)
 
     s3.upload(params, async (err, data) => {
       if (err) {
@@ -48,26 +56,30 @@ app.post('/upload', type, async (req,res) => {
       console.log(data)
       res.send({go_to: '/test', fileName: fileName})
 
-    })
-    
+    }) 
  })
 
- app.get('/test', async (req,res) => {
-    // console.log(req.query.fileName)
-    let params = {
-      Bucket: BUCKET_NAME,
-      Key: req.query.fileName,
-      Expires: 60 * 60 * 24 * 14
-    }
+app.get('/test', async (req,res) => {
+  let params = {
+    Bucket: BUCKET_NAME,
+    Key: req.query.fileName
+  }
 
-    s3.getSignedUrl('getObject', params, async (err, url) => {
+  let returned_metadata = {};
+  s3.getObject( params, (err, data) => {
+    if (err) { throw new Error(err)}
+    returned_metadata = data.Metadata;
+    s3.getSignedUrl('getObject', params,  (err, url) => {
       if (err) { throw err;}
-      console.log(url)
-      res.render('myvideo', {video_signed_url: url})
+      res.render('myvideo', {
+        video_signed_url: url, 
+        full_name: returned_metadata.full_name,
+        expires_on: returned_metadata.expires_on,
+        date_uploaded: returned_metadata.date_uploaded
+      })
     })
-
-    
   })
+})
 
 app.listen('3000', () => {
   console.log ('Listening on port 3000')

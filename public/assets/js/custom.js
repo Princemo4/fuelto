@@ -50,7 +50,7 @@ async function startCamera() {
     stop_button.disabled = false
     save_video.disabled = true
     // set MIME type of recording as video/webm
-    media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+    media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm;codecs=h264' });
   
     // event : new recorded video blob available 
     media_recorder.addEventListener('dataavailable', function(e) {
@@ -63,7 +63,7 @@ async function startCamera() {
   
   stop_button.addEventListener('click', function() {
     media_recorder.stop(); 
-    blob_file = new Blob(blobs_recorded, { type: 'video/webm' })
+    blob_file = new Blob(blobs_recorded, { type: 'video/mp4' })
     video_local = URL.createObjectURL(blob_file);
     
     console.log(video_local)
@@ -76,9 +76,10 @@ async function startCamera() {
   
   save_video.addEventListener('click', function() {
     console.log('click')
-    var formData = new FormData();
+    let formData = new FormData();
   
     formData.append('file', blob_file, 'henry.webm')
+    formData.append('full_name', 'Mohamed')
     console.log(formData)
     $.ajax({
       url: '/upload',
