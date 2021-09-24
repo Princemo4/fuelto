@@ -53,7 +53,9 @@ app.post('/upload', type, async (req,res) => {
       if (err) {
         throw err;
       }
-      console.log(data)
+      fs.unlink(req.file.path, (err) => {
+        if (err) { throw new Error(err)};
+      })
       res.send({go_to: '/test', fileName: fileName})
 
     }) 
