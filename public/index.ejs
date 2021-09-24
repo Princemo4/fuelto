@@ -1,0 +1,73 @@
+
+    <div class="container-fluid py-4">
+      <div class="row mt-1">
+        <div class="col-lg-4 mb-lg-0 mb-4">
+          <div class="card h-100">
+            <div class="card-body p-3">
+              <div class="row">
+                <div class="col-lg-12 ms-auto text-center mt-5 mt-lg-0 h-100">
+                  <div class="bg-gradient-primary border-radius-lg h-100">
+                    <img src="../assets/img/shapes/waves-white.svg" class="position-absolute h-100 w-50 top-0 d-lg-block d-none" alt="waves">
+                    <div class="position-relative d-flex align-items-center justify-content-center h-100">
+                      <img class="w-100 position-relative z-index-2 pt-4" src="../assets/img/illustrations/rocket-white.png" alt="rocket">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-12 h-100">
+                  <div class="d-flex flex-column h-100">
+                    <h4 class="mb-1 pt-2 text-bold text-center">Boost Your Job Search</h4>
+                    <h5 class="font-weight-bolder"></h5>
+                    <p class="mb-3">Now a quick and easy way to stand out and get the proper attention to your job application</p>
+                    <hr>
+                    <h6 class="p-1">With this online Cover Letter Video generator, you can record a quick video and submit it with your job application.  Its purpose is to replace the typical boring cover letter with a more personalized video.  This will impress the employer and will get you so much more attention.</h6>
+                    <hr>
+                    <p class="mb-1 pt-2 text-bold">Instructions:</p>
+                    <p class="mb-1">1) No signup necessary.  Just start recording your cover letter video</p>
+                    <p class="mb-1">2) Once you're done recording, you will be redirected to your video page</p>
+                    <p class="mb-1">3) Save the link (URL) to your video and submit it to the specific job</p>
+                    <p class="mb-3 pt-2 text-bold">Remember to save your video link</p>
+                    <p class="mb-2 pt-2 text-bold text-red">THESE VIDEOS WILL AUTOMATICALLY EXPIRE AFTER 14 DAYS</p>
+
+
+
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-7  text-center">
+          <div class="card h-100 p-3">
+            <div class="overflow-hidden  position-relative border-radius-lg bg-cover h-100" );">
+              <span class="mask bg-gradient-dark"></span>
+              <div class="card-body position-relative z-index-1 align-items-center  d-flex flex-column h-100 p-3">
+                <h5 class="text-white font-weight-bolder mb-4 pt-2">Let's Record Your Video</h5>
+                <p class="text-white">Job Seeker Hints: <br> 1) Make your video short and sweet <br> 2) Personalize each video for each company you apply to <br> 3) Be human!</p>
+
+
+                <video id="recorder-video" width="50%" height="50%" autoplay muted poster="https://cdn1.vectorstock.com/i/thumb-large/22/00/rec-icon-button-record-sign-recording-video-vector-37642200.jpg">
+
+                </video>
+                <div class="row justify-content-center">
+                  <div>
+                    <p class="text-white">Click 'Start Camera' if camera didn't start</p>
+                    <button class="btn bg-gradient-primary btn-sm col-lg-4" id="start-camera">Start Camera</button>
+                  </div>
+
+                    <button class="btn bg-gradient-dark col-lg-6" id="start-record">Start Recording</button>
+                    <button class="btn bg-gradient-secondary col-lg-6" id="stop-record">Stop Recording</button>
+                    <div method="POST" action="/upload" enctype="multipart/form-data">
+                    <button  class="btn btn-sm btn-white col-lg-6" id="save-video" download="test.webm" value="USE THIS VIDEO">SAVE THIS VIDEO</button>
+
+                  </div>
+                </div>
+ 
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
