@@ -4,6 +4,9 @@ let video = document.querySelector("#recorder-video");
 let start_button = document.querySelector("#start-record");
 let stop_button = document.querySelector("#stop-record");
 let save_video = document.querySelector("#save-video");
+let rocket_placeholder = document.querySelector("#rocket-placeholder");
+let video_preview_placeholder = document.querySelector("#video-preview-placeholder");
+let video_preview = document.querySelector("#video-preview");
 
 stop_button.disabled = true;
 start_button.disabled = true;
@@ -72,11 +75,20 @@ async function startCamera() {
   start_button.addEventListener('click', function() {
     blobs_recorded = []; //clear previous recording
     start_button.innerText = 'RECORDING....'
+    start_button.classList = 'btn btn-danger text-white col-lg-6'
+    video_preview_placeholder.hidden = true;
+    video.hidden = false;
     start_button.disabled = true
     stop_button.disabled = false
     save_video.disabled = true
     // set MIME type of recording as video/webm
-    media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+    userAgent = navigator.userAgent.toLowerCase()
+   if ( (userAgent.indexOf("safari") != -1) && (userAgent.indexOf("chrome") == -1) ) {
+
+    	media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/mp4' });
+    }else {	
+    	media_recorder = new MediaRecorder(camera_stream, { mimeType: 'video/webm' });
+    }
   
     // event : new recorded video blob available 
     media_recorder.addEventListener('dataavailable', function(e) {
@@ -92,9 +104,11 @@ async function startCamera() {
     blob_file = new Blob(blobs_recorded, { type: 'video/mp4' })
     video_local = URL.createObjectURL(blob_file);
     
-    console.log(video_local)
-    // save_video.href = video_local;
+    video_preview.src = video_local;
+    video_preview_placeholder.hidden = false;
+    video.hidden = true;
     start_button.innerText = 'Delete & Record Again'
+    start_button.classList = 'btn btn-danger text-white col-lg-6'
     start_button.disabled = false;
     stop_button.disabled = true;
     save_video.disabled = false;
@@ -105,7 +119,7 @@ async function startCamera() {
     let formData = new FormData();
   
     formData.append('file', blob_file, 'henry.webm')
-    formData.append('full_name', 'Mohamed')
+    // formData.append('full_name', 'Mohamed')
     console.log(formData)
     $.ajax({
       url: '/upload',

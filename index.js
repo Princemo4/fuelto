@@ -44,7 +44,7 @@ app.post('/upload', type, async (req,res) => {
       Body: fileContent,
       Metadata: {
         'date_uploaded': todayDate.toDateString(),
-        'full_name': req.body.full_name,
+        'full_name': "",
         'Expires_On': expiresOn.toDateString()
       }
     }

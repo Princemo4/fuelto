@@ -50,6 +50,12 @@
   border-radius: 2rem;
 }
 
+#video-preview {
+  margin: -3px !important;
+  padding: 10px;
+  background: transparent !important;
+}
+
 @-webkit-keyframes AnimationName {
   0% {
     background-position: 0% 50%
