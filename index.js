@@ -21,8 +21,8 @@ const s3 = new AWS.S3({
 
 const video_expires_days = 14; // 14 days to expire from S3
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: true}))
+app.use(bodyParser.json({limit: '5000mb'}));
+app.use(bodyParser.urlencoded({limit: '5000mb', extended: true}))
 app.set('views', path.join(__dirname, 'public'))
 app.use(express.static(__dirname + '/public'));
 app.use(expressLayouts);
